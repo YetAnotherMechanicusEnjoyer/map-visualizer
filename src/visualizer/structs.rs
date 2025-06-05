@@ -1,30 +1,19 @@
 use std::fmt;
 
 pub enum CreationError {
-    Negative,
-    Zero,
     Empty,
 }
 
 impl fmt::Display for CreationError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let desc = match *self {
-            CreationError::Negative => "Value must be greater than zero",
-            CreationError::Zero => "Value must be greater than zero",
             CreationError::Empty => "Value mustn't be empty",
         };
         f.write_str(desc)
     }
 }
 
-fn check_u(n: i32) -> Result<(), CreationError> {
-    match n {
-        x if x < 0 => Err(CreationError::Negative),
-        0 => Err(CreationError::Zero),
-        _ => Ok(()),
-    }
-}
-
+#[derive(Debug, Clone)]
 pub struct Map<'a> {
     map: &'a str,
     walls: &'a str,
@@ -39,13 +28,13 @@ impl<'a> Map<'a> {
             Ok(Self { map, walls, paths })
         }
     }
-    pub fn get_map(self) -> &'a str {
+    pub fn get_map(&self) -> &'a str {
         self.map
     }
-    pub fn get_walls(self) -> &'a str {
+    pub fn get_walls(&self) -> &'a str {
         self.walls
     }
-    pub fn get_paths(self) -> &'a str {
+    pub fn get_paths(&self) -> &'a str {
         self.paths
     }
 }
