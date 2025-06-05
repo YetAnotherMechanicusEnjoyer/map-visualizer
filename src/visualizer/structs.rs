@@ -26,17 +26,21 @@ fn check_u(n: i32) -> Result<(), CreationError> {
 }
 
 pub struct Map<'a> {
+    map: &'a str,
     walls: &'a str,
     paths: &'a str,
 }
 
 impl<'a> Map<'a> {
-    pub fn new(walls: &'a str, paths: &'a str) -> Result<Self, CreationError> {
-        if walls.is_empty() || paths.is_empty() {
+    pub fn new(map: &'a str, walls: &'a str, paths: &'a str) -> Result<Self, CreationError> {
+        if map.is_empty() || walls.is_empty() || paths.is_empty() {
             Err(CreationError::Empty)
         } else {
-            Ok(Self { walls, paths })
+            Ok(Self { map, walls, paths })
         }
+    }
+    pub fn get_map(self) -> &'a str {
+        self.map
     }
     pub fn get_walls(self) -> &'a str {
         self.walls
@@ -48,7 +52,7 @@ impl<'a> Map<'a> {
 
 impl<'a> fmt::Display for Map<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let desc = format!("({:?}, {:?})", self.walls, self.paths);
+        let desc = format!("{:?}\n({:?}, {:?})", self.map, self.walls, self.paths);
         f.write_str(&desc)
     }
 }
