@@ -37,14 +37,33 @@ fn get_first_char(string: &str) -> char {
 }
 
 fn print_map(map: &Map) {
-    let v: Vec<&str> = map.get_map().split('\n').collect();
+    let mut v: Vec<&str> = map.get_map().split('\n').collect();
     let walls = map.get_walls();
     let paths = map.get_paths();
     let wall = get_first_char(walls);
     let path = get_first_char(paths);
 
-    for string in v {
+    v.remove(v.len() - 1);
+    print!("   ");
+    for x in 0..v.len() {
+        if x < 10 {
+            print!(" 0{x}");
+        } else if x < 100 {
+            print!(" {x}");
+        } else {
+            print!("{x}");
+        }
+    }
+    println!();
+    for (y, string) in v.iter().enumerate() {
         let mut nb = 0;
+        if y < 10 {
+            print!("0{y} ");
+        } else if y < 100 {
+            print!("{y} ");
+        } else {
+            print!("{y}");
+        }
         for (i, c) in string.chars().enumerate() {
             let s1 = string.split_at(i).1;
             if nb != i {
@@ -52,10 +71,10 @@ fn print_map(map: &Map) {
             }
             if c == wall && strncmp(s1, walls, walls.len()) == 0 {
                 nb += walls.len();
-                print!("\x1b[30;47m  ");
+                print!("\x1b[30;47m   ");
             } else if c == path && strncmp(s1, paths, paths.len()) == 0 {
                 nb += paths.len();
-                print!("\x1b[30;44m  ");
+                print!("\x1b[30;44m   ");
             } else {
                 nb += 1;
             }
